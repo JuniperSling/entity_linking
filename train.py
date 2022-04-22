@@ -132,7 +132,7 @@ def train(config):
             print(report, confusion)
         else:
             early_stop_count += 1
-            if early_stop_count > 9:
+            if early_stop_count > 5:
                 print('early stop!')
                 break
         time.sleep(1)
