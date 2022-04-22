@@ -10,11 +10,7 @@ pooling_type: first-last-avg  # pooler/last-avg/first-last-avg
 
 # model parameter setup
 gpu: '0'
-<<<<<<< HEAD
 epoch: 100
-=======
-epoch: 20
->>>>>>> 2f757944f7906660766504ff2760642aa9e5a465
 lr: 0.0001
 batch_size: 512
 sent_max_len: 128
