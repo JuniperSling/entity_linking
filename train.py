@@ -93,6 +93,12 @@ def train(config):
 
     loss_total, top_acc = [], 0
     early_stop_count = 0  # 连续10轮没有上升就停止
+    acc, loss, report, confusion = evaluation(multi_classification_model,
+                                              test_dataloader, loss_func, label2ind_dict,
+                                              config.save_path)
+    print("at first:")
+    print("Accuracy: %.4f   Loss in test %.4f" % (acc, loss))
+    print(report, confusion)
     for epoch in range(config.epoch):
         multi_classification_model.train()
         start_time = time.time()
@@ -131,8 +137,9 @@ def train(config):
             torch.save(multi_classification_model.state_dict(), 'checkpoint_model_epoch_{}.pt'.format(epoch))
             print(report, confusion)
         else:
+            print(report, confusion)
             early_stop_count += 1
-            if early_stop_count > 5:
+            if early_stop_count > config.early_stop_count:
                 print('early stop!')
                 break
         time.sleep(1)
