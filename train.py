@@ -99,6 +99,10 @@ def train(config):
     print("at first:")
     print("Accuracy: %.4f   Loss in test %.4f" % (acc, loss))
     print(report, confusion)
+    train_loss = []
+    test_acc = []
+    test_loss = []
+
     for epoch in range(config.epoch):
         multi_classification_model.train()
         start_time = time.time()
@@ -126,11 +130,19 @@ def train(config):
             optimizer.zero_grad()
             loss_total.append(loss.detach().item())
         print("Epoch: %03d; loss = %.4f cost time  %.4f" % (epoch, np.mean(loss_total), time.time() - start_time))
-
+        train_loss.append(np.mean(loss_total))
         acc, loss, report, confusion = evaluation(multi_classification_model,
                                                   test_dataloader, loss_func, label2ind_dict,
                                                   config.save_path)
         print("Accuracy: %.4f   Loss in test %.4f" % (acc, loss))
+        test_acc.append(acc)
+        test_loss.append(loss)
+        print("train loss list", end='')
+        print(train_loss)
+        print("test acc list", end='')
+        print(test_acc)
+        print("test loss list", end='')
+        print(test_loss)
         if top_acc < acc:
             early_stop_count = 0
             top_acc = acc
