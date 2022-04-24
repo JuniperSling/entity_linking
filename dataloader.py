@@ -52,7 +52,7 @@ def load_data(path, label_dic):
                 texts1.append(d['entity'] + '|' + d['sentence'])
                 texts2.append(d['predict_entity_label_list'][0] + '|' + d['predict_entity_description_list'][0])
                 labels.append(label_dic[d['label_list'][0]])
-                # 成功预测两个数据
+                # 成功预测两个数据,需要处理两个
                 if len(d['predict_entity_label_list']) > 1:
                     texts1.append(d['entity'] + '|' + d['sentence'])
                     texts2.append(d['predict_entity_label_list'][1] + '|' + d['predict_entity_description_list'][1])
@@ -102,22 +102,3 @@ class BatchTextCall(object):
         segment = source.get('token_type_ids').squeeze(1)
         label = torch.tensor(batch_label)
         return token, segment, mask, label
-
-
-if __name__ == "__main__":
-
-    data_dir = "../../data/THUCNews"
-    pretrained_path = "D:\\Learn_Project\\Backup_Data\\tiny_bert_chinese_pretrained"
-
-    label_dict = {'体育': 0, '娱乐': 1, '家居': 2, '房产': 3, '教育': 4, '时尚': 5, '时政': 6, '游戏': 7, '科技': 8, '财经': 9}
-
-    # load_data(os.path.join(data_dir, "cnews.train.txt"), label_dict)
-    tokenizer, model = choose_bert_type(pretrained_path, bert_type="tiny_albert")
-
-    text_dataset = TextDataset(os.path.join(data_dir, "cnews.train.txt"), label_dict)
-    text_dataset_call = BatchTextCall(tokenizer)
-    text_dataloader = DataLoader(text_dataset, batch_size=2, shuffle=True, num_workers=2, collate_fn=text_dataset_call)
-
-    for i, (token, segment, mask, label) in enumerate(text_dataloader):
-        print(i, token, segment, mask, label)
-        break

@@ -1,5 +1,5 @@
 # data path
-data_dir: ../../input/elsmall
+data_dir: ../../input/elmid
 save_path: ../model
 
 # BERT parameter setup (change here while changing pre-train model)
@@ -12,6 +12,6 @@ pooling_type: first-last-avg  # pooler/last-avg/first-last-avg
 gpu: '0'
 epoch: 100
 lr: 0.0005
-batch_size: 32
+batch_size: 64
 sent_max_len: 128
-early_stop_count: 10
+early_stop_count: 5

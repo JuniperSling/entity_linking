@@ -49,7 +49,7 @@ def evaluation(model, test_dataloader, loss_func, label2ind_dict, save_path, val
 def train(config):
     os.environ["CUDA_VISIBLE_DEVICES"] = config.gpu
     torch.backends.cudnn.benchmark = True
-    label_dict = {True: 1, False: 0}
+    label_dic = {True: 1, False: 0}
     label2ind_dict = {'正样本': 1, '负样本': 0}
     # 设置 torch.backends.cudnn.benchmark=True 将会让程序在开始时花费一点额外时间，为整个网络的每个卷积层搜索最适合它的卷积实现算法，
     # 进而实现网络的加速。适用场景是网络结构固定（不是动态变化的），网络的输入形状（包括 batch size，图片大小，输入的通道）是不变的，
@@ -58,15 +58,15 @@ def train(config):
     tokenizer, bert_encode_model = choose_bert_type(config.pretrained_path, bert_type=config.bert_type)
     train_dataset_call = BatchTextCall(tokenizer, max_len=config.sent_max_len)
     print('loading train data...')
-    train_dataset = TextDataset(os.path.join(config.data_dir, "train.txt"), label_dict)
+    train_dataset = TextDataset(os.path.join(config.data_dir, "train.txt"), label_dic)
     train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True, num_workers=8,
                                   collate_fn=train_dataset_call)
     print('loading valid data...')
-    valid_dataset = TextDataset(os.path.join(config.data_dir, "dev.txt"), label_dict)
+    valid_dataset = TextDataset(os.path.join(config.data_dir, "dev.txt"), label_dic)
     valid_dataloader = DataLoader(valid_dataset, batch_size=config.batch_size, shuffle=True, num_workers=8,
                                   collate_fn=train_dataset_call)
     print('loading test data...')
-    test_dataset = TextDataset(os.path.join(config.data_dir, "test.txt"), label_dict)
+    test_dataset = TextDataset(os.path.join(config.data_dir, "test.txt"), label_dic)
     test_dataloader = DataLoader(test_dataset, batch_size=config.batch_size, shuffle=True, num_workers=8,
                                  collate_fn=train_dataset_call)
 
