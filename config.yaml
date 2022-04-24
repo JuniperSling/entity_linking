@@ -1,5 +1,5 @@
 # data path
-data_dir: ../../input/elmid
+data_dir: ../../input/elmedium
 save_path: ../model
 
 # BERT parameter setup (change here while changing pre-train model)
