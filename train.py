@@ -23,10 +23,11 @@ def evaluation(model, test_dataloader, loss_func, label2ind_dict, save_path, val
     labels_all = np.array([], dtype=int)
 
     for ind, (token, segment, mask, label) in enumerate(test_dataloader):
-        token = token.cuda()
-        segment = segment.cuda()
-        mask = mask.cuda()
-        label = label.cuda()
+        if torch.cuda.is_available():
+            token = token.cuda()
+            segment = segment.cuda()
+            mask = mask.cuda()
+            label = label.cuda()
 
         out = model(token, segment, mask)
         loss = loss_func(out, label)
@@ -93,12 +94,14 @@ def train(config):
 
     loss_total, top_acc = [], 0
     early_stop_count = 0  # 连续10轮没有上升就停止
+    '''
     acc, loss, report, confusion = evaluation(multi_classification_model,
                                               test_dataloader, loss_func, label2ind_dict,
                                               config.save_path)
     print("at first:")
     print("Accuracy: %.4f   Loss in test %.4f" % (acc, loss))
     print(report, confusion)
+    '''
     train_loss = []
     test_acc = []
     test_loss = []
