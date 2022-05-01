@@ -4,7 +4,7 @@ save_path: ../model
 
 # BERT parameter setup (change here while changing pre-train model)
 pretrained_path: # fill nothing to use models on huggingface.co
-bert_type: bert-base-cased  #  bert-base-uncased/roberta-base
+bert_type: bert-large-uncased  #  bert-base-uncased/roberta-base
 hidden_size: 768 #  bert(macbert): 768 or tiny_albert: 312
 pooling_type: first-last-avg  # pooler/last-avg/first-last-avg
 

@@ -77,7 +77,7 @@ def evaluate(path):
 def evaluate_with_candidate(path, limits):
     jump_count = 0
 
-    end_line = 50000  # 需要测试的行数
+    end_line = 10000  # 需要测试的行数
 
     jump_prop = 1  # 跳过90%
 
@@ -94,7 +94,7 @@ def evaluate_with_candidate(path, limits):
             try:
                 d = pickle.load(f)
                 jump_count += 1
-                if jump_count < 150000: continue
+                if jump_count < 0: continue
 
                 flag = random.random()
 
@@ -121,7 +121,7 @@ def evaluate_with_candidate(path, limits):
                         right_predict_count += 1
                 all_count += 1
                 true_all_count += 1
-                print(str(limits) + "test-Generate Acc: " + str(right_generate_count / true_all_count), end='')
+                print(str(limits) + "train-Generate Acc: " + str(right_generate_count / true_all_count), end='')
                 if right_generate_count != 0: print("Predict Acc/Generate: " + str(right_predict_count / right_generate_count), end='')
                 print("Predict Acc/All: " + str(right_predict_count / true_all_count))
                 pbar.update(1)
@@ -145,8 +145,8 @@ if __name__ == '__main__':
     config = load_config(args.config)
     tokenizer, bert_encode_model = choose_bert_type(config.pretrained_path, bert_type=config.bert_type)
     model = BertClassification(bert_encode_model, hidden_size=config.hidden_size, num_classes=2, pooling_type=config.pooling_type)
-    model.load_state_dict(torch.load(config.save_path + '/batch64lr5e-4hidden768bertbase/checkpoint_model_epoch_9.pt', map_location=torch.device('cpu')), False)
+    model.load_state_dict(torch.load(config.save_path + '/batch64lr5e-4hidden768bertbasecased/checkpoint_model_epoch_28.pt', map_location=torch.device('cpu')), False)
 
     # evaluate('../data/49000-125854/test.txt')
     # single_test(sentence1, sentence2)
-    evaluate_with_candidate('../data/100000-260209/train.txt', 50)
+    evaluate_with_candidate('../data/49000-125854/train.txt', 50)
