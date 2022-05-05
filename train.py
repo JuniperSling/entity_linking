@@ -84,7 +84,7 @@ def train(config):
                                   lr=config.lr,
                                   betas=(0.9, 0.999),
                                   eps=1e-08,
-                                  weight_decay=0.01, amsgrad=False)
+                                  weight_decay=config.weight_decay, amsgrad=False)
     # betas (Tuple[float, float], 可选) – 用于计算梯度以及梯度平方的运行平均值的系数（默认：0.9，0.999）
     # beta1：一阶矩估计的指数衰减率（如 0.9）
     # beta2：二阶矩估计的指数衰减率（如 0.999）。该超参数在稀疏梯度（如在 NLP 或计算机视觉任务中）中应该设置为接近 1 的数。
@@ -94,14 +94,15 @@ def train(config):
 
     loss_total, top_acc = [], 0
     early_stop_count = 0  # 连续10轮没有上升就停止
-    '''
+
+    # 训练前效果评测
     acc, loss, report, confusion = evaluation(multi_classification_model,
                                               test_dataloader, loss_func, label2ind_dict,
                                               config.save_path)
     print("at first:")
     print("Accuracy: %.4f   Loss in test %.4f" % (acc, loss))
     print(report, confusion)
-    '''
+
     train_loss = []
     test_acc = []
     test_loss = []
